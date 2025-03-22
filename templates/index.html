@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upstox Trading Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --neon-purple: #9d4edd;
+            --neon-green: #04e762;
+            --dark-bg: #0f172a;
+            --darker-bg: #0a0e1a;
+            --medium-bg: #1e293b;
+            --light-bg: #334155;
+        }
+        
+        body {
+            background-color: var(--dark-bg);
+            color: #f8fafc;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        .card {
+            background-color: var(--medium-bg);
+            border: 1px solid var(--light-bg);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: bold;
+        }
+        
+        .neon-blue-glow {
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.7);
+        }
+        
+        .neon-btn-blue {
+            background: linear-gradient(90deg, #0284c7, #0ea5e9);
+            color: white;
+            font-weight: bold;
+            border: none;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .neon-btn-blue:hover {
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.7);
+            transform: translateY(-2px);
+        }
+        
+        .neon-border {
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 8px rgba(0, 242, 255, 0.3);
+        }
+        
+        .token-row {
+            transition: all 0.2s ease;
+        }
+        
+        .token-row:hover {
+            background-color: rgba(30, 41, 59, 0.8);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--light-bg);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4b5563;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="mb-10">
+            <div class="card rounded-lg p-6">
+                <div class="flex items-center">
+                    <div class="mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold gradient-text">UPSTOX TRADE</h1>
+                        <p class="text-gray-400 mt-2">Enterprise-grade trading solutions for financial professionals</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="card rounded-lg p-6 mb-6">
+                <h2 class="text-xl font-semibold mb-4 text-blue-300 neon-blue-glow">Authentication Portal</h2>
+                <div id="auth-section">
+                    <div id="login-status" class="mb-6 p-4 rounded bg-gray-800 border border-gray-700">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <p class="text-gray-300">You are not logged in to the Upstox trading platform. Please authenticate to access your portfolio.</p>
+                        </div>
+                    </div>
+                    <button id="authorize-btn" class="neon-btn-blue py-3 px-6 rounded-md flex items-center justify-center w-full md:w-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v-1l1-1 1-1-0.257-0.257A6 6 0 1118 8zm-6-4a1 1 0 10-2 0v1a1 1 0 102 0V4z" clip-rule="evenodd" />
+                        </svg>
+                        Authenticate with Upstox
+                    </button>
+                </div>
+            </div>
+
+            <div id="token-details" class="card rounded-lg p-6 mb-6 hidden">
+                <h2 class="text-xl font-semibold mb-4 text-blue-300 neon-blue-glow">Secure Access Details</h2>
+                <div class="overflow-x-auto neon-border rounded-lg p-1">
+                    <table class="min-w-full">
+                        <tbody id="token-info" class="divide-y divide-gray-700">
+                            <!-- Token details will be filled by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <a href="/dashboard" class="neon-btn-blue py-2 px-4 rounded-md flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                        </svg>
+                        Go to Dashboard
+                    </a>
+                </div>
+            </div>
+
+            <div id="error-message" class="bg-red-900 border border-red-700 text-red-200 px-4 py-3 rounded-lg relative mb-6 hidden" role="alert">
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <span class="block sm:inline" id="error-text"></span>
+                </div>
+            </div>
+
+            <div class="card rounded-lg p-6 mb-6">
+                <h2 class="text-xl font-semibold mb-4 text-blue-300 neon-blue-glow">Platform Features</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                        <div class="mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white">Advanced Analytics</h3>
+                        <p class="text-gray-400 mt-2">Access institutional-grade technical analysis and market insights.</p>
+                    </div>
+                    <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                        <div class="mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white">Lightning Execution</h3>
+                        <p class="text-gray-400 mt-2">Experience sub-millisecond trade execution with our low-latency infrastructure.</p>
+                    </div>
+                    <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                        <div class="mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-white">Enterprise Security</h3>
+                        <p class="text-gray-400 mt-2">Bank-grade encryption and multi-factor authentication protect your assets.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="mt-12 text-center text-gray-500 text-sm">
+            <p>© 2025 Upstox Trading Platform | Enterprise Solutions</p>
+            <p class="mt-1">Secure • Reliable • Professional</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const authorizeBtn = document.getElementById('authorize-btn');
+            const loginStatus = document.getElementById('login-status');
+            const tokenDetails = document.getElementById('token-details');
+            const tokenInfo = document.getElementById('token-info');
+            const errorMessage = document.getElementById('error-message');
+            const errorText = document.getElementById('error-text');
+
+            // Check for existing user ID in localStorage
+            const userId = localStorage.getItem('upstox_user_id');
+            
+            if (userId) {
+                checkToken(userId);
+            }
+
+            // Handle authorization
+            authorizeBtn.addEventListener('click', function() {
+                loginStatus.innerHTML = `
+                    <div class="flex items-center">
+                        <svg class="animate-spin h-5 w-5 mr-3 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <p class="text-blue-300">Initiating secure connection to Upstox...</p>
+                    </div>
+                `;
+                
+                fetch('/authorize')
+                    .then(response => response.json())
+                    .then(data => {
+                        window.location.href = data.auth_url;
+                    })
+                    .catch(error => {
+                        showError('Connection failed: ' + error.message);
+                    });
+            });
+
+            // Check if we're returning from auth callback
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('code')) {
+                // We're in the callback - this means we should hide the URL parameters for cleaner UX
+                window.history.replaceState({}, document.title, window.location.pathname);
+                
+                // Show loading state
+                loginStatus.innerHTML = `
+                    <div class="flex items-center">
+                        <svg class="animate-spin h-5 w-5 mr-3 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <p class="text-blue-300">Authenticating with Upstox... Please wait.</p>
+                    </div>
+                `;
+                
+                // The backend will handle the token exchange via the /callback endpoint
+                // We'll just poll for the token after a short delay
+                setTimeout(() => {
+                    // Since we don't know the user_id yet, we'll need to check the response
+                    // from the callback endpoint to get it
+                    pollForTokenAfterCallback();
+                }, 2000);
+            }
+
+            function pollForTokenAfterCallback() {
+                fetch('/callback' + window.location.search)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Authentication failed');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.status === 'success') {
+                            // We'll use the token to fetch user details
+                            fetchUserDetails(data.access_token);
+                        } else {
+                            showError('Authentication failed: ' + (data.detail || 'Unknown error'));
+                        }
+                    })
+                    .catch(error => {
+                        showError('Authentication error: ' + error.message);
+                    });
+            }
+
+            function fetchUserDetails(accessToken) {
+                // Use the access token to make a request to get user details
+                fetch('https://api.upstox.com/v2/user/profile', {
+                    headers: {
+                        'Authorization': 'Bearer ' + accessToken
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch user details');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.status === 'success' && data.data) {
+                        const userId = data.data.user_id;
+                        localStorage.setItem('upstox_user_id', userId);
+                        
+                        // Now we can fetch the saved token details from our backend
+                        checkToken(userId);
+                    } else {
+                        showError('Failed to get user details: ' + (data.error || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    showError('Error fetching user details: ' + error.message);
+                });
+            }
+
+            function checkToken(userId) {
+                fetch(`/token/${userId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            if (response.status === 404) {
+                                throw new Error('Session expired. Please login again.');
+                            }
+                            throw new Error('Failed to fetch token');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Update UI with token details
+                        loginStatus.innerHTML = `
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <p class="text-green-300">Authentication successful. Welcome back, <span class="font-semibold">${data.user_name || userId}</span>.</p>
+                            </div>
+                        `;
+                        
+                        // Show token details
+                        displayTokenDetails(data);
+                        tokenDetails.classList.remove('hidden');
+                    })
+                    .catch(error => {
+                        localStorage.removeItem('upstox_user_id');
+                        loginStatus.innerHTML = `
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <p class="text-gray-300">You are not logged in to the Upstox trading platform. Please authenticate to access your portfolio.</p>
+                            </div>
+                        `;
+                        tokenDetails.classList.add('hidden');
+                        showError(error.message);
+                    });
+            }
+
+            function displayTokenDetails(data) {
+                // Clear previous token info
+                tokenInfo.innerHTML = '';
+                
+                // Add rows for each token detail
+                const details = [
+                    { label: 'User ID', value: data.user_id || 'N/A', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' },
+                    { label: 'Account Name', value: data.user_name || 'N/A', icon: 'M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
+                    { label: 'Email', value: data.email || 'N/A', icon: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' },
+                    { label: 'Access Token', value: maskToken(data.access_token), icon: 'M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z' },
+                    { label: 'Session Expires', value: formatDateTime(data.expires_at), icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' }
+                ];
+
+                details.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.className = 'token-row';
+                    row.innerHTML = `
+                        <td class="py-4 px-6 text-sm font-medium text-gray-400">
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${item.icon}" />
+                                </svg>
+                                ${item.label}
+                            </div>
+                        </td>
+                        <td class="py-4 px-6 text-sm text-gray-200 break-all">${item.value}</td>
+                    `;
+                    tokenInfo.appendChild(row);
+                });
+            }
+
+            function maskToken(token) {
+                if (!token) return 'N/A';
+                return token.substring(0, 10) + '••••••••••••••••' + token.substring(token.length - 10);
+            }
+
+            function formatDateTime(dateTimeStr) {
+                if (!dateTimeStr) return 'N/A';
+                const date = new Date(dateTimeStr);
+                return date.toLocaleString('en-US', { 
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                });
+            }
+
+            function showError(message) {
+                errorText.textContent = message;
+                errorMessage.classList.remove('hidden');
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    errorMessage.classList.add('hidden');
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>

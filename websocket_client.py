@@ -6,7 +6,7 @@ import requests
 from google.protobuf.json_format import MessageToDict
 import MarketDataFeedV3_pb2
 
-class UpstoxWebsocketClient:
+class UpstoxLiveDataClient:
     def __init__(self, access_token):
         self.access_token = access_token
         self.websocket = None
@@ -15,14 +15,41 @@ class UpstoxWebsocketClient:
         self.ssl_context.verify_mode = ssl.CERT_NONE
         
     def get_websocket_url(self):
+
         """Get authorized WebSocket URL from Upstox API"""
-        headers = {"Authorization": f"Bearer {self.access_token}"}
+        clean_token = self.access_token.strip()
+        
+        headers = {
+            "Accept": "application/json",
+            "Api-Version": "3.0",
+            "Authorization": f"Bearer {clean_token}"
+        }
+        
+        print("Requesting WebSocket authorization...")
         response = requests.get(
             "https://api.upstox.com/v3/feed/market-data-feed/authorize", 
             headers=headers
         )
+        
+        print(f"Response status: {response.status_code}")
+        
         if response.status_code == 200:
-            return response.json().get("authorized_redirect_uri")
+            print("Authentication successful")
+            print("Full response:")
+            response_data = response.json()
+            print(json.dumps(response_data, indent=2))
+            
+            ws_url = (response_data.get("authorized_redirect_uri") or 
+                    response_data.get("data", {}).get("authorized_redirect_uri") or
+                    response_data.get("data", {}).get("websocket_url") or
+                    response_data.get("websocket_url"))
+            
+            if ws_url:
+                print(f"WebSocket URL found: {ws_url}")
+                return ws_url
+            else:
+                print("WebSocket URL not found in response")
+                return None
         else:
             print(f"Error: {response.status_code}")
             print(response.json())
@@ -55,25 +82,6 @@ class UpstoxWebsocketClient:
             print(f"Subscription error: {e}")
             return False
     
-    async def unsubscribe(self, instrument_keys):
-        """Unsubscribe from specified instruments"""
-        if not self.websocket:
-            return False
-            
-        unsubscription = {
-            "guid": "unsubscription-" + "-".join(instrument_keys),
-            "method": "unsub",
-            "data": {"instrumentKeys": instrument_keys}
-        }
-        
-        try:
-            await self.websocket.send(json.dumps(unsubscription))
-            print(f"Unsubscribed from {instrument_keys}")
-            return True
-        except Exception as e:
-            print(f"Unsubscription error: {e}")
-            return False
-    
     async def connect(self):
         """Establish WebSocket connection"""
         ws_url = self.get_websocket_url()
@@ -94,23 +102,21 @@ class UpstoxWebsocketClient:
             print(f"Connection error: {e}")
             return False
     
-    async def listen(self, callback=None):
-        """Listen for incoming WebSocket messages"""
+    async def listen_for_live_data(self):
+        """Listen for and print only live data for subscribed instruments"""
         if not self.websocket:
             print("WebSocket not connected")
             return
             
         try:
+            print("\n--- Waiting for live market data... ---\n")
             while True:
                 buffer = await self.websocket.recv()
                 decoded_data = self.decode_protobuf(buffer)
                 
-                if callback:
-                    # Call user-provided callback with decoded data
-                    await callback(decoded_data)
-                else:
-                    # Default behavior: print formatted JSON
-                    print(json.dumps(decoded_data, indent=2))
+                # Print only live data
+                self.print_live_data(decoded_data)
+                
         except websockets.exceptions.ConnectionClosed as e:
             print(f"Connection closed: {e}")
         except Exception as e:
@@ -120,70 +126,121 @@ class UpstoxWebsocketClient:
                 await self.websocket.close()
                 self.websocket = None
     
+    def print_live_data(self, data):
+        """Extract and print only the relevant live data"""
+        feed_type = data.get('type')
+        
+        if feed_type != 'live_feed': 
+            return
+            
+        timestamp = data.get('currentTs', 0)
+        human_time = self.format_timestamp(timestamp)
+        
+        print(f"\n[{human_time}] LIVE DATA UPDATE:")
+        
+        feeds = data.get('feeds', {})
+        for instrument_key, feed_data in feeds.items():
+            print(f"\n  {instrument_key}:")
+            
+            if 'ltpc' in feed_data:
+                ltp_data = feed_data['ltpc']
+                print(f"    LTP: {ltp_data.get('ltp', 'N/A')}")
+                print(f"    Change: {ltp_data.get('cp', 'N/A')}")
+                print(f"    Last Trade Qty: {ltp_data.get('ltq', 'N/A')}")
+                print(f"    Last Trade Time: {self.format_timestamp(ltp_data.get('ltt', 0))}")
+                
+            elif 'fullFeed' in feed_data:
+                full_feed = feed_data['fullFeed']
+                
+                if 'marketFF' in full_feed:
+                    market_ff = full_feed['marketFF']
+                    
+                    if 'ltpc' in market_ff:
+                        ltp_data = market_ff['ltpc']
+                        print(f"    LTP: {ltp_data.get('ltp', 'N/A')}")
+                        print(f"    Change: {ltp_data.get('cp', 'N/A')}")
+                    
+                    if 'marketLevel' in market_ff and 'bidAskQuote' in market_ff['marketLevel']:
+                        quotes = market_ff['marketLevel']['bidAskQuote']
+                        if quotes:
+                            print("    Market Depth:")
+                            for i, quote in enumerate(quotes[:5]):  # Print top 5 levels
+                                print(f"      L{i+1}: Bid {quote.get('bidQ', 'N/A')}@{quote.get('bidP', 'N/A')} | "
+                                      f"Ask {quote.get('askQ', 'N/A')}@{quote.get('askP', 'N/A')}")
+                    
+                    print(f"    Vol Traded Today: {market_ff.get('vtt', 'N/A')}")
+                    print(f"    Open Interest: {market_ff.get('oi', 'N/A')}")
+                    print(f"    Implied Volatility: {market_ff.get('iv', 'N/A')}")
+                    print(f"    Avg Traded Price: {market_ff.get('atp', 'N/A')}")
+                    
+                elif 'indexFF' in full_feed:
+                    index_ff = full_feed['indexFF']
+                    if 'ltpc' in index_ff:
+                        ltp_data = index_ff['ltpc']
+                        print(f"    Index Value: {ltp_data.get('ltp', 'N/A')}")
+                        print(f"    Change: {ltp_data.get('cp', 'N/A')}")
+            
+            elif 'firstLevelWithGreeks' in feed_data:
+                first_level = feed_data['firstLevelWithGreeks']
+                
+                if 'ltpc' in first_level:
+                    ltp_data = first_level['ltpc']
+                    print(f"    LTP: {ltp_data.get('ltp', 'N/A')}")
+                    print(f"    Change: {ltp_data.get('cp', 'N/A')}")
+                
+                if 'firstDepth' in first_level:
+                    quote = first_level['firstDepth']
+                    print(f"    Top of Book: Bid {quote.get('bidQ', 'N/A')}@{quote.get('bidP', 'N/A')} | "
+                          f"Ask {quote.get('askQ', 'N/A')}@{quote.get('askP', 'N/A')}")
+                
+                if 'optionGreeks' in first_level:
+                    greeks = first_level['optionGreeks']
+                    print("    Option Greeks:")
+                    print(f"      Delta: {greeks.get('delta', 'N/A')}")
+                    print(f"      Theta: {greeks.get('theta', 'N/A')}")
+                    print(f"      Gamma: {greeks.get('gamma', 'N/A')}")
+                    print(f"      Vega: {greeks.get('vega', 'N/A')}")
+                    print(f"      Rho: {greeks.get('rho', 'N/A')}")
+    
+    @staticmethod
+    def format_timestamp(timestamp_ms):
+        """Convert millisecond timestamp to human-readable format"""
+        from datetime import datetime
+        if not timestamp_ms:
+            return "N/A"
+        # Convert ms to seconds for datetime
+        dt = datetime.fromtimestamp(timestamp_ms / 1000)
+        return dt.strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+    
     async def close(self):
         """Close the WebSocket connection"""
         if self.websocket:
             await self.websocket.close()
             self.websocket = None
             print("WebSocket connection closed")
-
-async def process_market_data(data):
-    """Example callback function to process market data"""
-    # Process different types of feed data
-    feed_type = data.get('type')
-    
-    if feed_type == 'initial_feed':
-        print("Received initial feed data")
-    elif feed_type == 'live_feed':
-        print("Received live feed update")
-    elif feed_type == 'market_info':
-        print("Received market info update")
-    
-    # Access specific data points if needed
-    feeds = data.get('feeds', {})
-    for instrument_key, feed_data in feeds.items():
-        # Check which feed type we have
-        if 'ltpc' in feed_data:
-            ltp_data = feed_data['ltpc']
-            print(f"{instrument_key} - LTP: {ltp_data.get('ltp')}, Change: {ltp_data.get('cp')}")
-        elif 'fullFeed' in feed_data:
-            # Handle full feed data
-            full_feed = feed_data['fullFeed']
-            if 'marketFF' in full_feed:
-                market_data = full_feed['marketFF']
-                # Process market full feed
-                print(f"{instrument_key} - Market data received")
-            elif 'indexFF' in full_feed:
-                index_data = full_feed['indexFF']
-                # Process index full feed
-                print(f"{instrument_key} - Index data received")
-
 async def main():
-    # Replace with your actual access token
-    access_token = "your_access_token_here"
+
+    access_token = "eyJ0eXAiOiJKV1QiLCJrZXlfaWQiOiJza192MS4wIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiIzTEMyTTMiLCJqdGkiOiI2N2RlODEyNTA2MzJkMzYzZGE4ODYzMjgiLCJpc011bHRpQ2xpZW50IjpmYWxzZSwiaWF0IjoxNzQyNjM1MzAxLCJpc3MiOiJ1ZGFwaS1nYXRld2F5LXNlcnZpY2UiLCJleHAiOjE3NDI2ODA4MDB9.XBdp-WhINWeZS3IGcg3KGqBF9e-DRtqivgdRPIRZAGE"
     
-    client = UpstoxWebsocketClient(access_token)
+    client = UpstoxLiveDataClient(access_token)
     
-    # Connect to WebSocket
-    connected = await client.connect()
-    if not connected:
-        print("Failed to connect to WebSocket")
-        return
-    
-    # Subscribe to instruments
-    instruments = ["NSE_INDEX|Nifty Bank", "NSE_INDEX|Nifty 50"]
-    subscribed = await client.subscribe(instruments)
-    
-    if subscribed:
-        # Start listening for updates with custom callback
-        try:
-            await client.listen(callback=process_market_data)
-        except KeyboardInterrupt:
-            print("Interrupted by user")
-        finally:
-            # Clean up
-            await client.unsubscribe(instruments)
-            await client.close()
+    try:
+        connected = await client.connect()
+        if not connected:
+            print("Failed to connect to WebSocket")
+            return
+        
+
+        instruments = ["NSE_INDEX|Nifty Bank", "NSE_INDEX|Nifty 50", "NSE_EQ|RELIANCE"]
+        await client.subscribe(instruments, mode="full")
+        await client.listen_for_live_data()
+        
+    except Exception as e:
+        print(f"Error: {e}")
+        import traceback
+        traceback.print_exc()
+    finally:
+        await client.close()
 
 if __name__ == "__main__":
     asyncio.run(main())
