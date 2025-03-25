@@ -102,6 +102,8 @@ async def exchange_token(code: str = None):
         response.raise_for_status()
         result = response.json()
         
+        print(result)
+        
         user_id = result.get("user_id")
         access_token = result.get("access_token")
         

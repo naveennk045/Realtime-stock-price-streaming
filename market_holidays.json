@@ -1,0 +1,547 @@
+{
+  "status": "success",
+  "data": [
+    {
+      "date": "2025-02-01",
+      "description": "Budget Day Session",
+      "holiday_type": "TRADING_HOLIDAY",
+      "closed_exchanges": [
+        "CDS",
+        "BCD"
+      ],
+      "open_exchanges": [
+        {
+          "exchange": "NSE",
+          "start_time": 1738381500000,
+          "end_time": 1738404000000
+        },
+        {
+          "exchange": "NFO",
+          "start_time": 1738381500000,
+          "end_time": 1738404000000
+        },
+        {
+          "exchange": "BSE",
+          "start_time": 1738381500000,
+          "end_time": 1738404000000
+        },
+        {
+          "exchange": "BFO",
+          "start_time": 1738381500000,
+          "end_time": 1738404000000
+        },
+        {
+          "exchange": "MCX",
+          "start_time": 1738380600000,
+          "end_time": 1738409400000
+        },
+        {
+          "exchange": "NSCOM",
+          "start_time": 1738380600000,
+          "end_time": 1738409400000
+        }
+      ]
+    },
+    {
+      "date": "2025-02-19",
+      "description": "Chhatrapati Shivaji Maharaj Jayanti",
+      "holiday_type": "SETTLEMENT_HOLIDAY",
+      "closed_exchanges": [
+        "CDS",
+        "BCD"
+      ],
+      "open_exchanges": [
+        {
+          "exchange": "NSE",
+          "start_time": 1739936700000,
+          "end_time": 1739959200000
+        },
+        {
+          "exchange": "NFO",
+          "start_time": 1739936700000,
+          "end_time": 1739959200000
+        },
+        {
+          "exchange": "BSE",
+          "start_time": 1739936700000,
+          "end_time": 1739959200000
+        },
+        {
+          "exchange": "BFO",
+          "start_time": 1739936700000,
+          "end_time": 1739959200000
+        },
+        {
+          "exchange": "MCX",
+          "start_time": 1739935800000,
+          "end_time": 1739989500000
+        },
+        {
+          "exchange": "NSCOM",
+          "start_time": 1739935800000,
+          "end_time": 1739989500000
+        }
+      ]
+    },
+    {
+      "date": "2025-02-26",
+      "description": "Mahashivratri",
+      "holiday_type": "TRADING_HOLIDAY",
+      "closed_exchanges": [
+        "NSE",
+        "NFO",
+        "CDS",
+        "BSE",
+        "BFO",
+        "BCD"
+      ],
+      "open_exchanges": [
+        {
+          "exchange": "MCX",
+          "start_time": 1740569400000,
+          "end_time": 1740594300000
+        },
+        {
+          "exchange": "NSCOM",
+          "start_time": 1740569400000,
+          "end_time": 1740594300000
+        }
+      ]
+    },
+    {
+      "date": "2025-03-14",
+      "description": "Holi",
+      "holiday_type": "TRADING_HOLIDAY",
+      "closed_exchanges": [
+        "NSE",
+        "NFO",
+        "CDS",
+        "BSE",
+        "BFO",
+        "BCD"
+      ],
+      "open_exchanges": [
+        {
+          "exchange": "MCX",
+          "start_time": 1741951800000,
+          "end_time": 1741975200000
+        },
+        {
+          "exchange": "NSCOM",
+          "start_time": 1741951800000,
+          "end_time": 1741975200000
+        }
+      ]
+    },
+    {
+      "date": "2025-03-31",
+      "description": "Id-Ul-Fitr (Ramadan Eid)",
+      "holiday_type": "TRADING_HOLIDAY",
+      "closed_exchanges": [
+        "NSE",
+        "NFO",
+        "CDS",
+        "BSE",
+        "BFO",
+        "BCD"
+      ],
+      "open_exchanges": [
+        {
+          "exchange": "MCX",
+          "start_time": 1743420600000,
+          "end_time": 1743444000000
+        },
+        {
+          "exchange": "NSCOM",
+          "start_time": 1743420600000,
+          "end_time": 1743444000000
+        }
+      ]
+    },
+    {
+      "date": "2025-04-01",
+      "description": "Annual Bank Closing",
+      "holiday_type": "SETTLEMENT_HOLIDAY",
+      "closed_exchanges": [
+        "CDS",
+        "BCD"
+      ],
+      "open_exchanges": [
+        {
+          "exchange": "NSE",
+          "start_time": 1743479100000,
+          "end_time": 1743501600000
+        },
+        {
+          "exchange": "NFO",
+          "start_time": 1743479100000,
+          "end_time": 1743501600000
+        },
+        {
+          "exchange": "BSE",
+          "start_time": 1743479100000,
+          "end_time": 1743501600000
+        },
+        {
+          "exchange": "BFO",
+          "start_time": 1743479100000,
+          "end_time": 1743501600000
+        },
+        {
+          "exchange": "MCX",
+          "start_time": 1743478200000,
+          "end_time": 1743530400000
+        },
+        {
+          "exchange": "NSCOM",
+          "start_time": 1743478200000,
+          "end_time": 1743530400000
+        }
+      ]
+    },
+    {
+      "date": "2025-04-10",
+      "description": "Shri Mahavir Jayanti",
+      "holiday_type": "TRADING_HOLIDAY",
+      "closed_exchanges": [
+        "NSE",
+        "NFO",
+        "CDS",
+        "BSE",
+        "BFO",
+        "BCD"
+      ],
+      "open_exchanges": [
+        {
+          "exchange": "MCX",
+          "start_time": 1744284600000,
+          "end_time": 1744308000000
+        },
+        {
+          "exchange": "NSCOM",
+          "start_time": 1744284600000,
+          "end_time": 1744308000000
+        }
+      ]
+    },
+    {
+      "date": "2025-04-14",
+      "description": "Dr. Baba Saheb Ambedkar Jayanti",
+      "holiday_type": "TRADING_HOLIDAY",
+      "closed_exchanges": [
+        "NSE",
+        "NFO",
+        "CDS",
+        "BSE",
+        "BFO",
+        "BCD"
+      ],
+      "open_exchanges": [
+        {
+          "exchange": "MCX",
+          "start_time": 1744630200000,
+          "end_time": 1744653600000
+        },
+        {
+          "exchange": "NSCOM",
+          "start_time": 1744630200000,
+          "end_time": 1744653600000
+        }
+      ]
+    },
+    {
+      "date": "2025-04-18",
+      "description": "Good Friday",
+      "holiday_type": "TRADING_HOLIDAY",
+      "closed_exchanges": [
+        "NSE",
+        "NFO",
+        "CDS",
+        "BSE",
+        "BFO",
+        "BCD",
+        "MCX",
+        "NSCOM"
+      ],
+      "open_exchanges": []
+    },
+    {
+      "date": "2025-05-01",
+      "description": "Maharashtra Day",
+      "holiday_type": "TRADING_HOLIDAY",
+      "closed_exchanges": [
+        "NSE",
+        "NFO",
+        "CDS",
+        "BSE",
+        "BFO",
+        "BCD"
+      ],
+      "open_exchanges": [
+        {
+          "exchange": "MCX",
+          "start_time": 1746099000000,
+          "end_time": 1746122400000
+        },
+        {
+          "exchange": "NSCOM",
+          "start_time": 1746099000000,
+          "end_time": 1746122400000
+        }
+      ]
+    },
+    {
+      "date": "2025-05-12",
+      "description": "Buddha Pournima",
+      "holiday_type": "SETTLEMENT_HOLIDAY",
+      "closed_exchanges": [
+        "CDS",
+        "BCD"
+      ],
+      "open_exchanges": [
+        {
+          "exchange": "NSE",
+          "start_time": 1747021500000,
+          "end_time": 1747044000000
+        },
+        {
+          "exchange": "NFO",
+          "start_time": 1747021500000,
+          "end_time": 1747044000000
+        },
+        {
+          "exchange": "BSE",
+          "start_time": 1747021500000,
+          "end_time": 1747044000000
+        },
+        {
+          "exchange": "BFO",
+          "start_time": 1747021500000,
+          "end_time": 1747044000000
+        },
+        {
+          "exchange": "MCX",
+          "start_time": 1747020600000,
+          "end_time": 1747072800000
+        },
+        {
+          "exchange": "NSCOM",
+          "start_time": 1747020600000,
+          "end_time": 1747072800000
+        }
+      ]
+    },
+    {
+      "date": "2025-08-15",
+      "description": "Independence Day",
+      "holiday_type": "TRADING_HOLIDAY",
+      "closed_exchanges": [
+        "NSE",
+        "NFO",
+        "CDS",
+        "BSE",
+        "BFO",
+        "BCD",
+        "MCX",
+        "NSCOM"
+      ],
+      "open_exchanges": []
+    },
+    {
+      "date": "2025-08-27",
+      "description": "Ganesh Chaturthi",
+      "holiday_type": "TRADING_HOLIDAY",
+      "closed_exchanges": [
+        "NSE",
+        "NFO",
+        "CDS",
+        "BSE",
+        "BFO",
+        "BCD"
+      ],
+      "open_exchanges": [
+        {
+          "exchange": "MCX",
+          "start_time": 1756294200000,
+          "end_time": 1756317600000
+        },
+        {
+          "exchange": "NSCOM",
+          "start_time": 1756294200000,
+          "end_time": 1756317600000
+        }
+      ]
+    },
+    {
+      "date": "2025-09-05",
+      "description": "Id-E-Milad",
+      "holiday_type": "SETTLEMENT_HOLIDAY",
+      "closed_exchanges": [
+        "CDS",
+        "BCD"
+      ],
+      "open_exchanges": [
+        {
+          "exchange": "NSE",
+          "start_time": 1757043900000,
+          "end_time": 1757066400000
+        },
+        {
+          "exchange": "NFO",
+          "start_time": 1757043900000,
+          "end_time": 1757066400000
+        },
+        {
+          "exchange": "BSE",
+          "start_time": 1757043900000,
+          "end_time": 1757066400000
+        },
+        {
+          "exchange": "BFO",
+          "start_time": 1757043900000,
+          "end_time": 1757066400000
+        },
+        {
+          "exchange": "MCX",
+          "start_time": 1757043000000,
+          "end_time": 1757095200000
+        },
+        {
+          "exchange": "NSCOM",
+          "start_time": 1757043000000,
+          "end_time": 1757095200000
+        }
+      ]
+    },
+    {
+      "date": "2025-10-02",
+      "description": "Mahatma Gandhi Jayanti/Dussehra",
+      "holiday_type": "TRADING_HOLIDAY",
+      "closed_exchanges": [
+        "NSE",
+        "NFO",
+        "CDS",
+        "BSE",
+        "BFO",
+        "BCD",
+        "MCX",
+        "NSCOM"
+      ],
+      "open_exchanges": []
+    },
+    {
+      "date": "2025-10-21",
+      "description": "Diwali Laxmi Pujan",
+      "holiday_type": "TRADING_HOLIDAY",
+      "closed_exchanges": [],
+      "open_exchanges": [
+        {
+          "exchange": "NSE",
+          "start_time": 1761049800000,
+          "end_time": 1761053400000
+        },
+        {
+          "exchange": "NFO",
+          "start_time": 1761049800000,
+          "end_time": 1761053400000
+        },
+        {
+          "exchange": "CDS",
+          "start_time": 1761049800000,
+          "end_time": 1761053400000
+        },
+        {
+          "exchange": "BSE",
+          "start_time": 1761049800000,
+          "end_time": 1761053400000
+        },
+        {
+          "exchange": "BFO",
+          "start_time": 1761049800000,
+          "end_time": 1761053400000
+        },
+        {
+          "exchange": "BCD",
+          "start_time": 1761049800000,
+          "end_time": 1761053400000
+        },
+        {
+          "exchange": "MCX",
+          "start_time": 1761049800000,
+          "end_time": 1761053400000
+        },
+        {
+          "exchange": "NSCOM",
+          "start_time": 1761049800000,
+          "end_time": 1761053400000
+        }
+      ]
+    },
+    {
+      "date": "2025-10-22",
+      "description": "Diwali-Balipratipada",
+      "holiday_type": "TRADING_HOLIDAY",
+      "closed_exchanges": [
+        "NSE",
+        "NFO",
+        "CDS",
+        "BSE",
+        "BFO",
+        "BCD"
+      ],
+      "open_exchanges": [
+        {
+          "exchange": "MCX",
+          "start_time": 1761132600000,
+          "end_time": 1761156000000
+        },
+        {
+          "exchange": "NSCOM",
+          "start_time": 1761132600000,
+          "end_time": 1761156000000
+        }
+      ]
+    },
+    {
+      "date": "2025-11-05",
+      "description": "Prakash Gurpurb Sri Guru Nanak Dev",
+      "holiday_type": "TRADING_HOLIDAY",
+      "closed_exchanges": [
+        "NSE",
+        "NFO",
+        "CDS",
+        "BSE",
+        "BFO",
+        "BCD"
+      ],
+      "open_exchanges": [
+        {
+          "exchange": "MCX",
+          "start_time": 1762342200000,
+          "end_time": 1762367100000
+        },
+        {
+          "exchange": "NSCOM",
+          "start_time": 1762342200000,
+          "end_time": 1762367100000
+        }
+      ]
+    },
+    {
+      "date": "2025-12-25",
+      "description": "Christmas",
+      "holiday_type": "TRADING_HOLIDAY",
+      "closed_exchanges": [
+        "NSE",
+        "NFO",
+        "CDS",
+        "BSE",
+        "BFO",
+        "BCD",
+        "MCX",
+        "NSCOM"
+      ],
+      "open_exchanges": []
+    }
+  ]
+}
